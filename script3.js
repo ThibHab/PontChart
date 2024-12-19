@@ -1,46 +1,42 @@
 // Spécifiez le chemin vers votre fichier CSV
 const csvFilePath = './pont_data.csv';
 
-const width = 800;
-const height = 600;
-
-const svg = d3.select("#graph-container")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .attr("viewBox", `0 0 ${width} ${height}`)
-  .style("display", "block")
-  .style("margin", "auto");
-
-// Créez un groupe centré pour dessiner les éléments
- d3.select("#graph-container").select("svg").remove()
-const g = svg.append("g")
-  .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-  function groupBy(array, ...keys) {
-    return array.reduce((map, item) => {
-        let currentLevel = map;
-        keys.forEach((key, index) => {
-            const groupKey = typeof key === 'function' ? key(item) : item[key];
-            if (!currentLevel.has(groupKey)) {
-                currentLevel.set(groupKey, index === keys.length - 1 ? [] : new Map());
-            }
-            currentLevel = currentLevel.get(groupKey);
-        });
-        currentLevel.push(item);
-        return map;
-    }, new Map());
+function groupBy(array, ...keys) {
+  return array.reduce((map, item) => {
+    let currentLevel = map;
+    keys.forEach((key, index) => {
+      const groupKey = typeof key === 'function' ? key(item) : item[key];
+      if (!currentLevel.has(groupKey)) {
+        currentLevel.set(groupKey, index === keys.length - 1 ? [] : new Map());
+      }
+      currentLevel = currentLevel.get(groupKey);
+    });
+    currentLevel.push(item);
+    return map;
+  }, new Map());
 }
+
+function indexBy(data, ...keys) {
+  return data.reduce((map, item) => {
+    let currentLevel = map;
+    keys.forEach((key, index) => {
+      const groupKey = typeof key === 'function' ? key(item) : item[key];
+      if (!currentLevel.has(groupKey)) {
+        currentLevel.set(groupKey, index === keys.length - 1 ? [] : new Map());
+      }
+      currentLevel = currentLevel.get(groupKey);
+    });
+    currentLevel.push(item);
+    return map;
+  }, new Map());
+}
+
 
 async function createRadialChart() {
   try {
     // Charger et parser les données
     const response = await fetch(csvFilePath);
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP! Statut : ${response.status}`);
-    }
     const csvText = await response.text();
-    console.log("Contenu brut du CSV :", csvText);
 
     const parsedData = Papa.parse(csvText, {
       header: true,
@@ -51,27 +47,19 @@ async function createRadialChart() {
     console.log('Données brutes chargées :', parsedData.data);
     formattedData = [];
     parsedData.data.forEach(row => {
-      // const departement = row['oa_departem__1'];
-      const departement = row['oa_region__1'];
-
-      // oa_region__1
-      // let hauteur = row['ph1_hauteur_le'];
-      // let hauteur = row['oa_typedo_al'];
-      // let hauteur = row['ph1_typetab_er']; // 13
-      // let hauteur = row['ph1_materiau__1'];
-      let hauteur = row['ph1_materiau__1'];
-      // ph1_natured_ge
+      const departement = row['oa_departem__1'];
+      let hauteur = row['ph1_hauteur_le'];
 
       if (hauteur == null) {
         console.log("hauteur null");
-        // hauteur = "0m"; // Remplace les valeurs nulles par "0m"
-      } else {
-        // Ajout d'un objet formaté pour chaque entrée
-        formattedData.push({
-          departement: departement,
-          hauteurs: hauteur,
-        });
+        hauteur = "0m"; // Remplace les valeurs nulles par "0m"
       }
+
+      // Ajout d'un objet formaté pour chaque entrée
+      formattedData.push({
+        departement: departement,
+        hauteurs: hauteur,
+      });
     });
 
     const groupedData = groupBy(formattedData, d => d.departement, d => d.hauteurs);
@@ -82,16 +70,14 @@ async function createRadialChart() {
         result.push({
           departement: departement,
           hauteurs: hauteur,
-          population: items.length // Compter les occurrences pour chaque hauteur
+          population: items.length, // Compte les occurrences
         });
       });
     });
 
-    const sortedData = result.sort((a, b) => a.departement - b.departement);
+    console.log("Données regroupées et comptées :", result);
 
-    console.log("Données regroupées et comptées :", sortedData);
-
-    renderChart(sortedData);
+    renderChart(result);
 
   } catch (error) {
     console.error('Erreur lors du chargement des données :', error);
@@ -100,21 +86,25 @@ async function createRadialChart() {
 
 function renderChart(data) {
   console.log("Données envoyées à renderChart :", data);
+  const width = 928;
+  const height = width;
   const innerRadius = 180;
   const outerRadius = Math.min(width, height) / 2;
 
-  const categories = d3.union(data.map(d => d.hauteurs)); // Clés uniques pour les hauteurs
+  const categories = Array.from(new Set(data.map(d => d.hauteurs)));
+  const maxValue = d3.max(data, d => d.population);
+
   console.log("Catégories :", categories);
 
   // Stack the data into series by age
   const series = d3.stack()
-    .keys(categories)
+    .keys(categories) // Utilisez les catégories uniques
     .value(([, D], key) => {
       const group = D.get(key); // Récupère le groupe correspondant à la clé
       // console.log(`Groupe récupéré pour la clé ${key}:`, group);
       return group ? group.population : 0; // Retourne la population ou 0 si la clé est absente
     })
-    (d3.index(data, d => d.departement, d => d.hauteurs));
+  const indexedData = indexBy(data, d => d.departement, d => d.hauteurs);
 
   const arc = d3.arc()
     .innerRadius(d => y(d[0]))
@@ -131,9 +121,9 @@ function renderChart(data) {
     .align(0);
 
   // A radial y-scale maintains area proportionality of radial bars
-  const y = d3.scaleRadial()
-    .domain([0, d3.max(series, d => d3.max(d, d => d[1]))])
-    .range([innerRadius, outerRadius]);
+  const y = d3.scaleLinear()
+    .domain([0, maxValue]) // Les mêmes valeurs de domaine
+    .range([innerRadius, outerRadius]); 
 
   const color = d3.scaleOrdinal()
     .domain(series.map(d => d.key))
@@ -143,13 +133,11 @@ function renderChart(data) {
   // A function to format the value in the tooltip
   const formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
 
-  const svg = d3.select("div #graph-container")
-    .append("svg")
+  const svg = d3.create("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", `0 0 ${width} ${height}`)
-    .style("display", "block") // Assurez un affichage centré
-    .style("margin", "auto");  // Centre horizontalemen
+    .attr("viewBox", [-width / 2, -height / 2, width, height])
+    .attr("style", "width: 100%; height: auto; font: 10px sans-serif;");
 
   // A group for each series, and a rect for each element in the series
   svg.append("g")
@@ -162,7 +150,7 @@ function renderChart(data) {
       // console.log("Série actuelle (D) :", D);
       return D.map(d => {
         // console.log("Élément individuel dans D.map :", d);
-        d.key = D.key;
+        d.key = D.key; // Vérifiez si D.key est bien défini
         return d;
       });
     })
@@ -173,6 +161,7 @@ function renderChart(data) {
       const population = d.data[1]?.[d.key]?.population || 0;
       return `${d.data[0]} ${d.key}\n${formatValue(population)}`
     });
+  // .text(d => `${d.data[0]} ${d.key}\n${formatValue(d.data[1].get(d.key).population)}`);
 
   // x axis
   svg.append("g")
@@ -191,12 +180,7 @@ function renderChart(data) {
       .attr("transform", d => (x(d) + x.bandwidth() / 2 + Math.PI / 2) % (2 * Math.PI) < Math.PI
         ? "rotate(90)translate(0,16)"
         : "rotate(-90)translate(0,-9)")
-      .selectAll("tspan") // Ajouter plusieurs tspan pour gérer les sauts de ligne
-      .data(d => d.split(' ')) // Divise le texte par espace
-      .join("tspan")
-      .attr("x", 0) // Garde chaque ligne alignée au centre
-      .attr("dy", (d, i) => i === 0 ? 0 : "1.2em") // Décalage vertical entre les lignes
-      .text(d => d))
+      .text(d => d));
 
   // y axis
   svg.append("g")
@@ -240,10 +224,6 @@ function renderChart(data) {
       .text(d => d));
 
   document.body.appendChild(svg.node());
-  console.log("SVG:", svg);
-  console.log("Container:", d3.select("#graph-container").node());
 }
-
-
 
 createRadialChart();
