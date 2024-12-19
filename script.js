@@ -13,7 +13,7 @@ const svg = d3.select("#graph-container")
   .style("margin", "auto");
 
 // Créez un groupe centré pour dessiner les éléments
- d3.select("#graph-container").select("svg").remove()
+d3.select("#graph-container").select("svg").remove()
 const g = svg.append("g")
   .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
@@ -143,11 +143,11 @@ function renderChart(data) {
   // A function to format the value in the tooltip
   const formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
 
-  const svg = d3.select("div #graph-container")
+  const svg = d3.select("#graph-container")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("viewBox", `${-width/2} ${-height/2} ${width} ${height}`)
     .style("display", "block") // Assurez un affichage centré
     .style("margin", "auto");  // Centre horizontalemen
 
@@ -239,7 +239,7 @@ function renderChart(data) {
       .attr("dy", "0.35em")
       .text(d => d));
 
-  document.body.appendChild(svg.node());
+  //document.body.appendChild(svg.node());
   console.log("SVG:", svg);
   console.log("Container:", d3.select("#graph-container").node());
 }
