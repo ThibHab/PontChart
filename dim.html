@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme National Ponts</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+    <nav>
+        <h1>Programme National Ponts</h1>
+        <div>
+            <a class="menu" href="accueil.html">Accueil</a>
+            <div class="dropdown">
+                <a class="menu" href="javascript:void(0)" class="dropbtn">Visualisation D3</a>
+                <div class="dropdown-content">
+                    <a href="carte.html">Carte</a>
+                    <a href="dep.html">Département</a>
+                    <a href="dim.html">Dimension</a>
+                </div>
+            </div>
+            <a class="menu" href="about.html">À propos des ponts</a>
+        </div>
+    </nav>
+    <main>
+        <section>
+            <h1>Dimension des Ponts</h1>
+            <div id="graph-container"></div>
+            <script src="./script_longlarg.js"></script>
+        </section>
+        <section>
+            <h2>Commentaire</h2>
+            <p>
+                La visualisation des données des ponts est un outil essentiel pour comprendre l'état des ouvrages en France.
+                Grâce à cette visualisation, il est possible de voir rapidement les ponts qui nécessitent une attention particulière.
+            </p>
+            <h2>Analyse</h2>
+            <p>Les tableaux ci-dessous décrivent les relations entre les variables et les caractéristiques visuelles utilisées dans le graphique ci-dessus.</p>
+
+            <h3>Variables représentées dans le graphique</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Variable</th>
+                        <th>Type/Échelle de mesure</th>
+                        <th>Variables Visuelles présentes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Régions</td>
+                        <td>Nominale</td>
+                        <td>Angle</td>
+                    </tr>
+                    <tr>
+                        <td>Types de matériaux</td>
+                        <td>Nominale</td>
+                        <td>Couleur (Teinte)</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de ponts</td>
+                        <td>Quantitatif</td>
+                        <td>Aire</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <h3>Équivalence avec le tableau de McKinley</h3>
+            <h2>Classement des Variables Visuelles selon les échelles de mesure</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quantitative</th>
+                        <th>Ordinale</th>
+                        <th>Nominale</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Position</td>
+                        <td>Position</td>
+                        <td>Position <strong style="color: blue;">(Régions)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Aire <strong style="color: blue;">(Nombre de ponts)</strong></td>
+                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
+                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Volume</td>
+                        <td>Texture</td>
+                        <td>Texture</td>
+                    </tr>
+                    <tr>
+                        <td>Luminosité</td>
+                        <td>Luminosité</td>
+                        <td>Forme</td>
+                    </tr>
+                    <tr>
+                        <td>Angle</td>
+                        <td>Saturation <strong style="color: blue;">(Secteurs)</strong></td>
+                        <td>Saturation <strong style="color: blue;">(Secteurs)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
+                        <td>Angle</td>
+                        <td>Angle <strong style="color: blue;">(Régions)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Texture</td>
+                        <td>Aire <strong style="color: blue;">(Taille)</strong></td>
+                        <td>Aire <strong style="color: blue;">(Taille)</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Forme</td>
+                        <td>Volume</td>
+                        <td>Volume</td>
+                    </tr>
+                </tbody>
+            </table>            
+        </section>
+    </main>
+</body>
+</html>
