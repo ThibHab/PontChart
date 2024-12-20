@@ -1,4 +1,4 @@
-var body = d3.select("body");
+var body = d3.select("#graph-container");
 var svg = body.append("svg")
     .attr("width", 600)
     .attr("height", 650)
@@ -22,7 +22,7 @@ function ready(fr) {
         .data(fr.features)
         .enter()
         .append("path")
-        .attr("fill", "grey")
+        .attr("fill", "#ccc")
         .attr("d", path)
         .attr("stroke", "white")
         .attr("stroke-width", .2)
