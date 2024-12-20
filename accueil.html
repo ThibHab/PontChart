@@ -12,9 +12,16 @@
     <nav>
         <h1>Programme National Ponts</h1>
         <div>
-            <a href="accueil.html">Accueil</a>
-            <a href="main.html">Visualisation D3</a>
-            <a href="about.html">À propos des ponts</a>
+            <a class="menu" href="accueil.html">Accueil</a>
+            <div class="dropdown">
+                <a class="menu" href="javascript:void(0)" class="dropbtn">Visualisation D3</a>
+                <div class="dropdown-content">
+                    <a href="carte.html">Carte</a>
+                    <a href="dep.html">Département</a>
+                    <a href="dim.html">Dimension</a>
+                </div>
+            </div>
+            <a class="menu" href="about.html">À propos des ponts</a>
         </div>
     </nav>
 
@@ -40,7 +47,7 @@
             <h2>Travail réalisé par :</h2>
             <p>
                 <strong>Noé Fléchon</strong><br>
-                <strong>Thibault Haberer</strong>
+                <strong>Thibaut Haberer</strong>
             </p>
         </section>
 
