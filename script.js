@@ -1,38 +1,22 @@
 // Spécifiez le chemin vers votre fichier CSV
 const csvFilePath = './pont_data.csv';
 
-const width = 800;
-const height = 600;
+const width = 650;
+const height = 650;
 
-const svg = d3.select("#graph-container")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height)
-  .attr("viewBox", `0 0 ${width} ${height}`)
-  .style("display", "block")
-  .style("margin", "auto");
-
-// Créez un groupe centré pour dessiner les éléments
-d3.select("#graph-container").select("svg").remove()
-const g = svg.append("g")
-  .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-  function groupBy(array, ...keys) {
-    return array.reduce((map, item) => {
-        let currentLevel = map;
-        keys.forEach((key, index) => {
-            const groupKey = typeof key === 'function' ? key(item) : item[key];
-            if (!currentLevel.has(groupKey)) {
-                currentLevel.set(groupKey, index === keys.length - 1 ? [] : new Map());
-            }
-            currentLevel = currentLevel.get(groupKey);
-        });
-        currentLevel.push(item);
-        return map;
-    }, new Map());
-}
-
-async function createRadialChart() {
+async function createRadialChart(ii) {
+  //const svg = d3.select(`#graph-container${i}`)
+  //  .append("svg")
+  //  .attr("width", width)
+  //  .attr("height", height)
+  //  .attr("viewBox", `0 0 ${width} ${height}`)
+  //  .style("display", "block")
+  //  .style("margin", "auto");
+//
+  //// Créez un groupe centré pour dessiner les éléments
+  //d3.select(`#graph-container${i}`).select("svg").remove()
+  //const g = svg.append("g")
+  //  .attr("transform", `translate(${width / 2}, ${height / 2})`);
   try {
     // Charger et parser les données
     const response = await fetch(csvFilePath);
@@ -53,18 +37,39 @@ async function createRadialChart() {
     parsedData.data.forEach(row => {
       // const departement = row['oa_departem__1'];
       const departement = row['oa_region__1'];
-
-      // oa_region__1
-      // let hauteur = row['ph1_hauteur_le'];
-      // let hauteur = row['oa_typedo_al'];
-      // let hauteur = row['ph1_typetab_er']; // 13
-      // let hauteur = row['ph1_materiau__1'];
-      let hauteur = row['ph1_materiau__1'];
-      // ph1_natured_ge
+      var hauteur;
+      switch (ii) {
+        case 1:
+          hauteur = row['ph1_hauteur_le'];
+          break;
+        case 2:
+          hauteur = row['oa_typedo_al'];
+          break;
+        case 3:
+          hauteur = row['ph1_typetab_er'];
+          break;
+        case 4:
+          hauteur = row['ph1_materiau__1'];
+          break;
+        default:
+          break;
+      }
 
       if (hauteur == null) {
         console.log("hauteur null");
-        // hauteur = "0m"; // Remplace les valeurs nulles par "0m"
+        if(ii==1){
+          formattedData.push({
+            departement: departement,
+            hauteurs: "0m",
+          });
+        }else{
+          if(ii==4){
+            formattedData.push({
+              departement: departement,
+              hauteurs: "Non Renseigné",
+            });
+          }
+        }
       } else {
         // Ajout d'un objet formaté pour chaque entrée
         formattedData.push({
@@ -73,6 +78,21 @@ async function createRadialChart() {
         });
       }
     });
+
+    function groupBy(array, ...keys) {
+      return array.reduce((map, item) => {
+        let currentLevel = map;
+        keys.forEach((key, index) => {
+          const groupKey = typeof key === 'function' ? key(item) : item[key];
+          if (!currentLevel.has(groupKey)) {
+            currentLevel.set(groupKey, index === keys.length - 1 ? [] : new Map());
+          }
+          currentLevel = currentLevel.get(groupKey);
+        });
+        currentLevel.push(item);
+        return map;
+      }, new Map());
+    }
 
     const groupedData = groupBy(formattedData, d => d.departement, d => d.hauteurs);
 
@@ -91,14 +111,14 @@ async function createRadialChart() {
 
     console.log("Données regroupées et comptées :", sortedData);
 
-    renderChart(sortedData);
+    renderChart(sortedData,ii);
 
   } catch (error) {
     console.error('Erreur lors du chargement des données :', error);
   }
 }
 
-function renderChart(data) {
+function renderChart(data,ii) {
   console.log("Données envoyées à renderChart :", data);
   const innerRadius = 180;
   const outerRadius = Math.min(width, height) / 2;
@@ -143,11 +163,11 @@ function renderChart(data) {
   // A function to format the value in the tooltip
   const formatValue = x => isNaN(x) ? "N/A" : x.toLocaleString("en")
 
-  const svg = d3.select("#graph-container")
+  const svg = d3.select(`#graph-container${ii}`)
     .append("svg")
     .attr("width", width)
     .attr("height", height)
-    .attr("viewBox", `${-width/2} ${-height/2} ${width} ${height}`)
+    .attr("viewBox", `${-width / 2} ${-height / 2} ${width} ${height}`)
     .style("display", "block") // Assurez un affichage centré
     .style("margin", "auto");  // Centre horizontalemen
 
@@ -240,10 +260,13 @@ function renderChart(data) {
       .text(d => d));
 
   //document.body.appendChild(svg.node());
-  console.log("SVG:", svg);
-  console.log("Container:", d3.select("#graph-container").node());
+  //console.log("SVG:", svg);
+  //console.log("Container:", d3.select("#graph-container").node());
 }
 
 
 
-createRadialChart();
+createRadialChart(1);
+createRadialChart(2);
+//createRadialChart(3);
+createRadialChart(4);

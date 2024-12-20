@@ -10,17 +10,34 @@
 </head>
 <body>
     <nav>
-        <h1>Exemple Minimal D3</h1>
+        <h1>Programme National Ponts</h1>
         <div>
-            <a href="accueil.html">Accueil</a>
-            <a href="main.html">Visualisation D3</a>
-            <a href="about.html">À propos des ponts</a>
+            <a class="menu" href="accueil.html">Accueil</a>
+            <div class="dropdown">
+                <a class="menu" href="javascript:void(0)" class="dropbtn">Visualisation D3</a>
+                <div class="dropdown-content">
+                    <a href="carte.html">Carte</a>
+                    <a href="dep.html">Département</a>
+                    <a href="dim.html">Dimension</a>
+                </div>
+            </div>
+            <a class="menu" href="about.html">À propos des ponts</a>
         </div>
     </nav>
     <main>
         <section>
-            <h1>Visualisation des Données des Ponts</h1>
-            <div id="graph-container"></div>
+            <h1>Hauteur des Ponts</h1>
+            <div id="graph-container1"></div>
+            <script src="./script.js"></script>
+        </section>
+        <section>
+            <h1>Obstacle franchi</h1>
+            <div id="graph-container2"></div>
+            <script src="./script.js"></script>
+        </section>
+        <section>
+            <h1>Type de Matériaux</h1>
+            <div id="graph-container4"></div>
             <script src="./script.js"></script>
         </section>
         <section>
