@@ -18,6 +18,7 @@ d3.dsv(";", "pont_data.csv").then(data => {
         d.ph1_longueur_ur = d.ph1_longueur_ur === "" ? 0 : +d.ph1_longueur_ur;
         d.ph1_largeur_ge = d.ph1_largeur_ge === "" ? 0 : +d.ph1_largeur_ge;
         d.ph1_hauteur_le = d.ph1_hauteur_le === "" ? "0m" : d.ph1_hauteur_le;
+        d.ph1_materiau__1 = d.ph1_materiau__1 === "" ? "Non Renseigné" : d.ph1_materiau__1
     });
 
     // Prepare the scales for positional encoding.
