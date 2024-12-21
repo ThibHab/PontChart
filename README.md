@@ -1,6 +1,18 @@
-# Visualisation
+# Visualisation de Données
 
-- carte de la france avec les points des ponts enregistrés (localisation)
-- hauteur des ponts selon les départements (integres dans la crate de france quand on hover un departement?)
-- graphe longueur et largeur (nuage de point largeur en x et longueur en y (hauteur?))
-- type de ponts en fonction des departements (genre de roue deja presente)
+Afin de lancer la visualisation de donnée, il faut d'abord lancer le fichier python:
+
+```
+main.py
+```
+
+Une fois le fichier lancé, ouvrez le fichier:
+
+[accueil.html](accueil.html)
+
+
+### Quelque information utile
+
+La visualisation de la carte française affiche parfois les points derrière la carte. Recharger la page peut résoudre le problème.
+
+La page affichant le graphe sur la longueur et largeur des ponts est parfois lente au démarage. Pendant ce temps, les filtres se sont pas cliquable.
