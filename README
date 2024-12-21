@@ -9,3 +9,10 @@ Exécuter
     python main.py
 
 Puis ouvrir un navigateur avec http://localhost:8000/main.html
+
+
+## Information utile
+
+Le graphe avec la carte peut parfois avoir un probleme et afficher les points derrière la carte. Pour régler le problème recharger la page suffit.
+
+Le graphe affichant la longueur/largeur des ponts a des filtres qui peuvent mettre du temps a charger.
