@@ -1,15 +1,14 @@
-# Visualisation de Données
+# Visualisation de données de pont
 
-Afin de lancer la visualisation de donnée, il faut d'abord lancer le fichier python:
+- données : https://www.data.gouv.fr/fr/datasets/programme-national-ponts-donnees-publiques/
+- d3.js : https://observablehq.com/@d3/radial-stacked-bar-chart/2
 
-```
-main.py
-```
+# Visualiser les graphes
+Exécuter
 
-Une fois le fichier lancé, ouvrez le fichier:
+    python main.py
 
-[accueil.html](accueil.html)
-
+Puis ouvrir un navigateur avec http://localhost:8000/main.html
 
 ### Quelque information utile
 
