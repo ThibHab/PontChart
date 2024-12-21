@@ -130,16 +130,9 @@
             </select>
         </section>
         <section>
-            <h2>Commentaire</h2>
-            <p>
-                La visualisation des données des ponts est un outil essentiel pour comprendre l'état des ouvrages en
-                France.
-                Grâce à cette visualisation, il est possible de voir rapidement les ponts qui nécessitent une attention
-                particulière.
-            </p>
-            <h2>Analyse</h2>
-            <p>Les tableaux ci-dessous décrivent les relations entre les variables et les caractéristiques visuelles
-                utilisées dans le graphique ci-dessus.</p>
+            <h2>Analyse du graphique de la carte</h2>
+            <p>Ce tableau décrit les relations entre les variables représentées dans le graphique de la carte et les
+                caractéristiques visuelles utilisées :</p>
 
             <h3>Variables représentées dans le graphique</h3>
             <table>
@@ -152,25 +145,25 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Régions</td>
+                        <td>Localisation des communes</td>
                         <td>Nominale</td>
-                        <td>Angle</td>
+                        <td>Position</td>
                     </tr>
                     <tr>
-                        <td>Types de matériaux</td>
-                        <td>Nominale</td>
-                        <td>Couleur (Teinte)</td>
-                    </tr>
-                    <tr>
-                        <td>Nombre de ponts</td>
-                        <td>Quantitatif</td>
+                        <td>Nombre de ponts par commune</td>
+                        <td>Quantitative</td>
                         <td>Aire</td>
+                    </tr>
+                    <tr>
+                        <td>Couleur (Non utilisée)</td>
+                        <td>Nominale</td>
+                        <td>Teinte</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>Équivalence avec le tableau de McKinley</h3>
-            <h2>Classement des Variables Visuelles selon les échelles de mesure</h2>
+            <h2>Équivalence avec le tableau de McKinley</h2>
+            <h3>Classement des Variables Visuelles selon les échelles de mesure</h3>
             <table>
                 <thead>
                     <tr>
@@ -183,12 +176,12 @@
                     <tr>
                         <td>Position</td>
                         <td>Position</td>
-                        <td>Position <strong style="color: blue;">(Régions)</strong></td>
+                        <td>Position <strong style="color: blue;">(Localisation des communes)</strong></td>
                     </tr>
                     <tr>
-                        <td>Aire <strong style="color: blue;">(Nombre de ponts)</strong></td>
-                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
-                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
+                        <td>Aire <strong style="color: blue;">(Nombre de ponts par commune)</strong></td>
+                        <td>Teinte</td>
+                        <td>Teinte (Non utilisée dans ce graphique)</td>
                     </tr>
                     <tr>
                         <td>Volume</td>
@@ -202,18 +195,18 @@
                     </tr>
                     <tr>
                         <td>Angle</td>
-                        <td>Saturation <strong style="color: blue;">(Secteurs)</strong></td>
-                        <td>Saturation <strong style="color: blue;">(Secteurs)</strong></td>
+                        <td>Saturation (Couleur)</td>
+                        <td>Saturation (Couleur)</td>
                     </tr>
                     <tr>
-                        <td>Teinte <strong style="color: blue;">(Matériaux)</strong></td>
+                        <td>Teinte</td>
                         <td>Angle</td>
-                        <td>Angle <strong style="color: blue;">(Régions)</strong></td>
+                        <td>Angle</td>
                     </tr>
                     <tr>
                         <td>Texture</td>
-                        <td>Aire <strong style="color: blue;">(Taille)</strong></td>
-                        <td>Aire <strong style="color: blue;">(Taille)</strong></td>
+                        <td>Aire</td>
+                        <td>Aire</td>
                     </tr>
                     <tr>
                         <td>Forme</td>
@@ -223,6 +216,7 @@
                 </tbody>
             </table>
         </section>
+
     </main>
 </body>
 
