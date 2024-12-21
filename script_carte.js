@@ -44,30 +44,42 @@ d3.dsv(";", "pont_data.csv").then(datatmp => {
     const radius = d3.scaleSqrt([0, d3.max(data, d => d.len)], [0, 10]);
 
     // Create the legend.
-    //const legend = svg.append("g")
-    //    .attr("fill", "#777")
-    //    .attr("transform", "translate(500,500)")
-    //    .attr("text-anchor", "middle")
-    //    .style("font", "10px sans-serif")
-    //    .selectAll()
-    //    .data(radius.ticks(4).slice(1))
-    //    .join("g");
-//
-    //legend.append("circle")
-    //    .attr("fill", "none")
-    //    .attr("stroke", "#ccc")
-    //    .attr("cy", d => -radius(d))
-    //    .attr("r", radius);
-//
-    //legend.append("text")
-    //    .attr("y", d => -2 * radius(d))
-    //    .attr("dy", "1.3em")
-    //    .text(radius.tickFormat(4, "s"));
+    svg.append("text")
+        .attr("x", 450)
+        .attr("y", 500)
+        .attr("text-anchor", "middle")
+        .attr("fill", "#777")
+        .style("font", "12px sans-serif")
+        .text("Nombre de pont");
+
+    const legend = svg.append("g")
+        .attr("fill", "#777")
+        .attr("transform", "translate(400,550)")
+        .attr("text-anchor", "middle")
+        .style("font", "10px sans-serif")
+        .selectAll()
+        .data(radius.ticks(4).slice(1))
+        .join("g")
+        .attr("transform", (d, i) => `translate(${i * 30}, 0)`); // Adjust the spacing as needed
+
+    legend.append("circle")
+        .attr("legend", "true")
+        .attr("stroke", "#ccc")
+        .attr("fill-opacity", 0.5)
+        .attr("fill", "brown")
+        .attr("stroke-width", 0.5)
+        .attr("cy", 0)
+        .attr("r", radius);
+
+    legend.append("text")
+        .attr("y", d => -radius(d) - 25)
+        .attr("dy", "1.3em")
+        .text(radius.tickFormat(4, "s"));
 
     // Add a circle for each county, with a title (tooltip).
     const format = d3.format(",.0f");
     svg.append("g")
-        .attr("id","circle")
+        .attr("id", "circle")
         .attr("fill", "brown")
         .attr("fill-opacity", 0.5)
         .attr("stroke", "#fff")
@@ -86,26 +98,32 @@ d3.dsv(";", "pont_data.csv").then(datatmp => {
     ${format(d.len)} pont(s)`);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('departement').addEventListener('change', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('departement').addEventListener('change', function () {
         var selectedDepartement = this.value;
-        if (this.value=="") {
+        if (this.value == "") {
             console.log("AAAAAAAAAAAAAAAAAAAAAAAAa")
             svg.selectAll("g[circle]")
-            .attr("fill", "brown")
-            .attr("fill-opacity", 0.5)
-            .attr("stroke", "#fff")
-            .attr("stroke-width", 0.5);
+                .attr("fill", "brown")
+                .attr("fill-opacity", 0.5)
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 0.5);
             svg.selectAll("circle")
                 .attr("fill-opacity", 0.5)
                 .attr("fill", "brown")
                 .attr("stroke-width", 0.5);
         }
-        else{
+        else {
             svg.selectAll("circle")
                 .attr("fill-opacity", d => d.oa_departem__1 === selectedDepartement ? 0.5 : 0)
                 .attr("fill", "brown")
                 .attr("stroke-width", d => d.oa_departem__1 === selectedDepartement ? 0.5 : 0);
-            }
-        });
+        }
+        svg.selectAll("circle").filter(function () {
+            return d3.select(this).attr("legend") === "true";
+        }).attr("stroke", "#ccc")
+        .attr("fill-opacity", 0.5)
+        .attr("fill", "brown")
+        .attr("stroke-width", 0.5);
     });
+});
